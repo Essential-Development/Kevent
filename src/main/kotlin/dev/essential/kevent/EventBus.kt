@@ -1,6 +1,7 @@
 package dev.essential.kevent
 
 import dev.essential.kevent.internal.HandlerDefinition
+import java.util.WeakHashMap
 import kotlin.reflect.KClass
 
 /**
@@ -9,7 +10,7 @@ import kotlin.reflect.KClass
 class EventBus {
 
     private val handlers = mutableListOf<HandlerDefinition<*>>()
-
+    
     /**
      * Exception handler for errors thrown by event handlers.
      * By default, prints stack trace and continues.
@@ -24,7 +25,7 @@ class EventBus {
      * @param listener The listener to register
      */
     fun register(listener: EventListener) {
-        handlers += listener.handlers
+        handlers += listenerHandlers[listener] ?: emptyList()
         handlers.sortBy { it.priority.ordinal }
     }
 
@@ -67,5 +68,14 @@ class EventBus {
     ): Boolean {
         return handler.eventType == eventType ||
                handler.eventType.java.isAssignableFrom(eventType.java)
+    }
+    
+    companion object {
+        /**
+         * Internal storage for event handlers associated with each listener.
+         * Uses WeakHashMap to prevent memory leaks when listeners are garbage collected.
+         */
+        @PublishedApi
+        internal val listenerHandlers = WeakHashMap<EventListener, MutableList<HandlerDefinition<*>>>()
     }
 }
