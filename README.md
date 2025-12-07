@@ -58,8 +58,9 @@ var sent: Boolean = false
 ```kotlin
 import dev.essential.kevent.EventListener
 import dev.essential.kevent.EventPriority
+import dev.essential.kevent.on
 
-class CatMessenger : EventListener() {
+class CatMessenger : EventListener {
     
     private val onKey = on<KeyPressedEvent> { event ->
         println("Typing: ${event.key}")
@@ -114,7 +115,7 @@ Handlers execute from `LOWEST` to `HIGHEST`:
 | `HIGHEST` | Runs last        |
 
 ```kotlin
-class PriorityExample : EventListener() {
+class PriorityExample : EventListener {
 
     private val first = on<MyEvent>(EventPriority.LOWEST) { 
         println("I run first")
@@ -137,7 +138,7 @@ sealed class ChatEvent : Event {
     data class Leave(val user: String) : ChatEvent()
 }
 
-class ChatListener : EventListener() {
+class ChatListener : EventListener {
 
     // Log all chat activity
     private val onAnyChatEvent = on<ChatEvent> { event ->
