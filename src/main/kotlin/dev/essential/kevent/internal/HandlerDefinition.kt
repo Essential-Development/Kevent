@@ -7,7 +7,7 @@ import kotlin.reflect.KClass
 
 /**
  * Represents a registered event handler.
- * Created when [EventListener.on] is called.
+ * Created when [dev.essential.kevent.on] is called.
  *
  * @param E The event type this handler accepts
  * @property listener The [EventListener] that owns this handler

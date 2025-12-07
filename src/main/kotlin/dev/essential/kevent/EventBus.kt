@@ -21,10 +21,15 @@ class EventBus {
 
     /**
      * Registers all handlers from the given listener.
+     * If the listener is already registered, this method does nothing.
      *
      * @param listener The listener to register
      */
     fun register(listener: EventListener) {
+        if (handlers.any { it.listener === listener }) {
+            return
+        }
+        
         handlers += listenerHandlers[listener] ?: emptyList()
         handlers.sortBy { it.priority.ordinal }
     }
@@ -36,6 +41,7 @@ class EventBus {
      */
     fun unregister(listener: EventListener) {
         handlers.removeAll { it.listener === listener }
+        listenerHandlers.remove(listener)
     }
 
     /**
@@ -48,7 +54,7 @@ class EventBus {
     fun <E : Event> post(event: E): E {
         val eventType = event::class
 
-        for (handler in handlers) {
+        for (handler in handlers.toList()) {
             if (!isMatchingHandler(handler, eventType)) continue
 
             try {
