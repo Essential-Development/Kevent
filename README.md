@@ -32,7 +32,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.Essential-Development:kevent:1.0.0")
+    implementation("com.github.Essential-Development:kevent:v1.0.0")
 }
 ```
 
