@@ -2,6 +2,7 @@ package dev.essential.kevent
 
 import dev.essential.kevent.internal.HandlerDefinition
 import java.util.WeakHashMap
+import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.reflect.KClass
 
 /**
@@ -9,7 +10,7 @@ import kotlin.reflect.KClass
  */
 class EventBus {
 
-    private val handlers = mutableListOf<HandlerDefinition<*>>()
+    private val handlers = CopyOnWriteArrayList<HandlerDefinition<*>>()
     
     /**
      * Exception handler for errors thrown by event handlers.
@@ -41,7 +42,6 @@ class EventBus {
      */
     fun unregister(listener: EventListener) {
         handlers.removeAll { it.listener === listener }
-        listenerHandlers.remove(listener)
     }
 
     /**
@@ -54,7 +54,7 @@ class EventBus {
     fun <E : Event> post(event: E): E {
         val eventType = event::class
 
-        for (handler in handlers.toList()) {
+        for (handler in handlers) {
             if (!isMatchingHandler(handler, eventType)) continue
 
             try {
