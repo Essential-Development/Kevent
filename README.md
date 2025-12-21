@@ -32,11 +32,11 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.Essential-Development:kevent:v1.0.0")
+    implementation("com.github.Essential-Development:Kevent:v1.0.1")
 }
 ```
 
-> 💡 **Note:** Replace `1.0.0` with the [latest release](https://github.com/Essential-Development/kevent/releases) version.
+> 💡 **Note:** Replace `1.0.1` with the [latest release](https://github.com/Essential-Development/kevent/releases) version.
 
 ### Define Events
 
